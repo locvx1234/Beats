@@ -105,7 +105,7 @@ Index template được sử dụng để map các trường khi phân tích log
 
 File index template được cài đặt trong Packetbeat package. Nó sẽ tự động được load vào trong `packetbeat.yml` sau khi kết nối thành công đến Elasticsearch. 
 
-Nếu muốn disable tự động loading template, hoặc muốn sử dụng template tự tạo, bạn có thể thay đổi cài đặt trong file cấu hình. 
+Nếu muốn disable tự động load template, hoặc muốn sử dụng template tự tạo, bạn có thể thay đổi cài đặt trong file cấu hình. 
 
 Khi đó, bạn phải thêm một số thông số như sau : 
 
@@ -114,3 +114,56 @@ Khi đó, bạn phải thêm một số thông số như sau :
 	  template.name: "packetbeat"
 	  template.path: "packetbeat.template.json"
 	  template.overwrite: false
+
+
+## 5. Khởi động Packetbeat
+
+	sudo /etc/init.d/packetbeat
+
+hoặc 
+
+	service packetbeat start 
+	
+	
+# 6. Cấu hình Logstash Output
+
+Beat gửi data đến Logstash, Logstash nhận data bằng cách sử dụng `Beats input plugin`. 
+
+Do đó cần cài thêm plugin này : 
+
+	./bin/logstash-plugin install logstash-input-beats
+	
+Cấu hình Logstash lắng nghe tại port 5044 cho các kết nối tới từ Beats trong file `logstash.conf`
+
+	input {
+	  beats {
+		port => 5044
+	  }
+	}
+
+Nếu output là Elasticsearch :
+
+	output {
+	  elasticsearch {
+		hosts => "localhost:9200"
+		manage_template => false
+		index => "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
+		document_type => "%{[@metadata][type]}"
+	  }
+	}
+
+Nếu output là Kafka :
+
+	output {
+			kafka {
+					topic_id => "%{[@metadata][type]}"
+					bootstrap_servers => ["192.168.169.221:9092"]
+			}
+			stdout { codec => rubydebug }
+	}
+
+
+
+
+
+	

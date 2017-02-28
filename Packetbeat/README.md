@@ -41,7 +41,7 @@ https://www.elastic.co/guide/en/beats/packetbeat/current/packetbeat-installation
 
 ## 3. Cấu hình 
 
-Với các gói rpm và deb, file cấu hình sẽ ở đường dẫn /etc/filebeat/filebeat.yml
+Với các gói rpm và deb, file cấu hình sẽ ở đường dẫn /etc/packetbeat/packetbeat.yml
 
 #### 3.1 Chọn các interface
 

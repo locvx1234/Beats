@@ -145,7 +145,7 @@ Nếu output là Elasticsearch :
 
 	output {
 	  elasticsearch {
-		hosts => "localhost:9200"
+		hosts => "ip_elasticsearch:9200"
 		manage_template => false
 		index => "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
 		document_type => "%{[@metadata][type]}"
@@ -157,7 +157,7 @@ Nếu output là Kafka :
 	output {
 			kafka {
 					topic_id => "%{[@metadata][type]}"
-					bootstrap_servers => ["192.168.169.221:9092"]
+					bootstrap_servers => ["ip_kafka:9092"]
 			}
 			stdout { codec => rubydebug }
 	}
